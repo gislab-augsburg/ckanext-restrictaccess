@@ -7,17 +7,11 @@ class RestrictAccessPlugin(SingletonPlugin):
 
     def update_config(self, config):
         # Add custom CSS and template override path to hide the logout icon
-        config['extra_public_paths'] = ','.join([
-            config.get('extra_public_paths', ''),
-            'ckanext/restrictaccess/public',
-        ])
-        config['extra_template_paths'] = ','.join([
-            config.get('extra_template_paths', ''),
-            'ckanext/restrictaccess/templates',
-        ])
+        toolkit.add_public_directory(config, 'ckanext/restrictaccess/public')
+        toolkit.add_template_directory(config, 'ckanext/restrictaccess/templates')
 
     def before_map(self, map):
-        # Define routes to be blocked
+    # Define routes to be blocked
         restricted_paths = [
             '/user/login',
             '/user/_logout',
@@ -32,5 +26,7 @@ class RestrictAccessPlugin(SingletonPlugin):
 
         return map
 
-def block_access():
-    abort(403, 'Access to this page is restricted.')
+    def block_access():
+        toolkit.response.status = 403
+        return toolkit.render('403.html', extra_vars={'message': 'Access to this page is restricted.'})
+
