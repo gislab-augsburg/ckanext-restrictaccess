@@ -1,4 +1,5 @@
 from ckan.plugins import SingletonPlugin, implements, IConfigurer, IRoutes, toolkit
+from flask import abort
 
 class RestrictAccessPlugin(SingletonPlugin):
     implements(IConfigurer)
@@ -27,11 +28,9 @@ class RestrictAccessPlugin(SingletonPlugin):
         ]
 
         for path in restricted_paths:
-            map.connect(f'restricted_{path}', path, controller='ckanext.restrictaccess.plugin:RestrictAccessController', action='block_access')
+            map.connect(f'restricted_{path}', path, controller='ckanext.restrictaccess.plugin:block_access')
 
         return map
 
-
-class RestrictAccessController(toolkit.BaseController):
-    def block_access(self):
-        toolkit.abort(403, 'Access to this page is restricted.')
+def block_access():
+    abort(403, 'Access to this page is restricted.')
