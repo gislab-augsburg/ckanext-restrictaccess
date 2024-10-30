@@ -1,0 +1,13 @@
+{% ckan_extends "layout/header.html" %}
+<script>
+    // Optionally, disable the logout function
+    document.addEventListener('DOMContentLoaded', function() {
+        const logoutLink = document.getElementById('logout');
+        if (logoutLink) {
+            logoutLink.onclick = function(e) {
+                e.preventDefault();
+                alert("Logout function is disabled.");
+            };
+        }
+    });
+</script>
