@@ -1,4 +1,4 @@
-from ckan.plugins import SingletonPlugin, implements, IConfigurer, IRoutes
+from ckan.plugins import SingletonPlugin, implements, IConfigurer, IRoutes, toolkit
 
 class RestrictAccessPlugin(SingletonPlugin):
     implements(IConfigurer)
@@ -32,8 +32,6 @@ class RestrictAccessPlugin(SingletonPlugin):
         return map
 
 
-from ckan.lib.base import BaseController, abort
-
-class RestrictAccessController(BaseController):
+class RestrictAccessController(toolkit.BaseController):
     def block_access(self):
-        abort(403, 'Access to this page is restricted.')
+        toolkit.abort(403, 'Access to this page is restricted.')
